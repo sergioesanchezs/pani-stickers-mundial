@@ -216,7 +216,7 @@ grid-template-columns:1fr;
 </select>
 
 <button class="btn-download" id="downloadBtn">
-Descargar Pegatina
+Descargar Sticker
 </button>
 
 </div>
@@ -310,25 +310,41 @@ templateSelect.value;
 
 downloadBtn.addEventListener("click", async () => {
 
-const canvas =
-await html2canvas(
-document.getElementById("sticker"),
-{
-scale:4,
-useCORS:true
-}
+const sticker = document.getElementById("sticker");
+
+const canvas = await html2canvas(sticker, {
+scale: 1,
+useCORS: true,
+backgroundColor: null
+});
+
+const finalCanvas = document.createElement("canvas");
+
+finalCanvas.width = 1080;
+finalCanvas.height = 1350;
+
+const ctx = finalCanvas.getContext("2d");
+
+ctx.drawImage(
+canvas,
+0,
+0,
+1080,
+1350
 );
 
-const link =
-document.createElement("a");
+const link = document.createElement("a");
 
-link.download =
-"pegatina.png";
+link.download = "pegatina.png";
 
-link.href =
-canvas.toDataURL("image/png");
+link.href = finalCanvas.toDataURL(
+"image/png",
+1.0
+);
 
 link.click();
+
+});
 
 });
 
